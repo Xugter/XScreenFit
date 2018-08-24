@@ -1,6 +1,8 @@
 package com.xugter.autofit;
 
 import android.app.Application;
+import android.content.ComponentCallbacks;
+import android.content.res.Configuration;
 
 /**
  * Created by xubo on 2018/8/23.
@@ -11,6 +13,7 @@ public class AutoFitHelper {
     public static class AutoFitHelperBuilder {
 
         private Application application;
+        private ActivityLifecycleCallbacksImpl activityLifecycleCallbacks = new ActivityLifecycleCallbacksImpl();
 
         public AutoFitHelperBuilder(Application application) {
             this.application = application;
@@ -37,7 +40,18 @@ public class AutoFitHelper {
         }
 
         public void create() {
-            application.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacksImpl());
+            application.registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
+            application.registerComponentCallbacks(new ComponentCallbacks() {
+                @Override
+                public void onConfigurationChanged(Configuration newConfig) {
+                    activityLifecycleCallbacks.configChanged();
+                }
+
+                @Override
+                public void onLowMemory() {
+
+                }
+            });
         }
     }
 }
