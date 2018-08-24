@@ -22,4 +22,16 @@
         android:onClick="goToHorizontal"
         android:text="Horizontal" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="goToCancel"
+        android:text="Cancel" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="goToFit"
+        android:text="Fit" />
+
 </LinearLayout>

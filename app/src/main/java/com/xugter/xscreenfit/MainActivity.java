@@ -24,5 +24,14 @@ public class MainActivity extends AppCompatActivity {
     public void goToHorizontal(View view) {
         startActivity(new Intent(this, HorizontalActivity.class));
     }
+    public void goToCancel(View view) {
+        startActivity(new Intent(this, CancelActivity.class));
+    }
+
+    public void goToFit(View view) {
+        startActivity(new Intent(this, FitActivity.class));
+    }
+
+
 
 }
