@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.xugter.autofit.adapt.CancelAdapt;
 import com.xugter.autofit.adapt.CustomAdapt;
 import com.xugter.autofit.adapt.FitAdapter;
+import com.xugter.autofit.utils.Logger;
 import com.xugter.autofit.utils.ScreenUtils;
 
 /**
@@ -29,6 +29,8 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
 
     private float verticalScale = 1;
     private float horizontalScale = 1;
+
+    private final static String TAG = "ActivityLifecycleCallbacksImpl";
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -89,6 +91,7 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
     }
 
     public void configChanged() {
+        Logger.i(TAG, "=========configChanged");
         state = State.NORMAL;
         isReady = false;
     }
@@ -102,7 +105,7 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
     }
 
     private void changeToHorizontalDensity(Activity activity) {
-        Log.d("bbbb", "=========changeToHorizontalDensity");
+        Logger.d(TAG, "=========changeToHorizontalDensity");
         if (state == State.HORIZONTAL) return;
         state = State.HORIZONTAL;
         activity.getResources().getDisplayMetrics().density = Resources.getSystem().getDisplayMetrics().density * horizontalScale;
@@ -110,7 +113,7 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
     }
 
     private void changeToVerticalDensity(Activity activity) {
-        Log.d("bbbb", "=========changeToVerticalDensity");
+        Logger.d(TAG, "=========changeToVerticalDensity");
         if (state == State.VERTICAL) return;
         state = State.VERTICAL;
         activity.getResources().getDisplayMetrics().density = Resources.getSystem().getDisplayMetrics().density * verticalScale;
@@ -118,7 +121,7 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
     }
 
     private void resetDensity(Activity activity) {
-        Log.d("bbbb", "=========resetDensity");
+        Logger.d(TAG, "=========resetDensity");
         if (state == State.NORMAL) return;
         state = State.NORMAL;
         activity.getResources().getDisplayMetrics().density = Resources.getSystem().getDisplayMetrics().density;
@@ -131,6 +134,7 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
             horizontalScale = horizontalDensity / Resources.getSystem().getDisplayMetrics().density;
             float verticalDensity = (activity.getResources().getDisplayMetrics().heightPixels - ScreenUtils.getStatusBarHeight()) / Config.baseHeight;
             verticalScale = verticalDensity / Resources.getSystem().getDisplayMetrics().density;
+            Logger.i(TAG, "=========horizontalScale=" + horizontalScale + "  verticalScale=" + verticalScale);
             isReady = true;
         }
     }

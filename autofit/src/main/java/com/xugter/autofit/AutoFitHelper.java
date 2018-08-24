@@ -39,6 +39,11 @@ public class AutoFitHelper {
             return this;
         }
 
+        public AutoFitHelperBuilder setDebug(boolean debug) {
+            Config.debug = debug;
+            return this;
+        }
+
         public void create() {
             application.registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
             application.registerComponentCallbacks(new ComponentCallbacks() {

@@ -9,4 +9,5 @@ public class Config {
     public static float baseHeight = 640;
     public static boolean defaultTurnedOn = false;
     public static boolean defaultHorizontal = true;
+    public static boolean debug = false;
 }
