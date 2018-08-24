@@ -8,6 +8,7 @@ import android.util.Log;
 import com.xugter.autofit.adapt.CancelAdapt;
 import com.xugter.autofit.adapt.CustomAdapt;
 import com.xugter.autofit.adapt.FitAdapter;
+import com.xugter.autofit.utils.ScreenUtils;
 
 /**
  * Created by xubo on 2018/8/23.
@@ -23,9 +24,14 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
 
     private State state = State.NORMAL;
     private Object lock = new Object();
+    private boolean isReady = false;
+    private float originalDensity = 0;
+    private float verticalDensity = 0;
+    private float horizontalDensity = 0;
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+        getReady(activity);
         if (Config.defaultTurnedOn) {
             if (activity instanceof CancelAdapt) {
                 resetDensity(activity);
@@ -93,20 +99,29 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
         Log.d("bbbb", "=========changeToHorizontalDensity");
         if (state == State.HORIZONTAL) return;
         state = State.HORIZONTAL;
-        activity.getResources().getDisplayMetrics().density = 3;
+        activity.getResources().getDisplayMetrics().density = horizontalDensity;
     }
 
     private void changeToVerticalDensity(Activity activity) {
         Log.d("bbbb", "=========changeToVerticalDensity");
         if (state == State.VERTICAL) return;
         state = State.VERTICAL;
-        activity.getResources().getDisplayMetrics().density = 2.7f;
+        activity.getResources().getDisplayMetrics().density = verticalDensity;
     }
 
     private void resetDensity(Activity activity) {
         Log.d("bbbb", "=========resetDensity");
         if (state == State.NORMAL) return;
         state = State.NORMAL;
-        activity.getResources().getDisplayMetrics().density = 2.625f;
+        activity.getResources().getDisplayMetrics().density = originalDensity;
+    }
+
+    private void getReady(Activity activity) {
+        if (!isReady) {
+            originalDensity = activity.getResources().getDisplayMetrics().density;
+            horizontalDensity = activity.getResources().getDisplayMetrics().widthPixels / Config.baseWidth;
+            verticalDensity = (activity.getResources().getDisplayMetrics().heightPixels - ScreenUtils.getStatusBarHeight()) / Config.baseHeight;
+            isReady = true;
+        }
     }
 }
