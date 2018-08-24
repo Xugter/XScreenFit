@@ -88,8 +88,9 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
 
     }
 
-    public void configChanged () {
+    public void configChanged() {
         state = State.NORMAL;
+        isReady = false;
     }
 
     private void setCustomAdapt(Activity activity) {
