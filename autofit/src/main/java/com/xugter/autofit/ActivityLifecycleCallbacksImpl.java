@@ -68,6 +68,11 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
 
     @Override
     public void onActivityResumed(Activity activity) {
+        if (state != State.NORMAL && activity instanceof CustomAdapt) {
+            if (((CustomAdapt) activity).resetOnResume()) {
+                resetDensity(activity);
+            }
+        }
     }
 
     @Override
@@ -96,15 +101,7 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
         isReady = false;
     }
 
-    private void setCustomAdapt(Activity activity) {
-        if (((CustomAdapt) activity).isBaseOnWidth()) {
-            changeToHorizontalDensity(activity);
-        } else {
-            changeToVerticalDensity(activity);
-        }
-    }
-
-    private void changeToHorizontalDensity(Activity activity) {
+    public void changeToHorizontalDensity(Activity activity) {
         Logger.d(TAG, "=========changeToHorizontalDensity");
         if (state == State.HORIZONTAL) return;
         state = State.HORIZONTAL;
@@ -112,7 +109,7 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
         activity.getResources().getDisplayMetrics().scaledDensity = Resources.getSystem().getDisplayMetrics().scaledDensity * horizontalScale;
     }
 
-    private void changeToVerticalDensity(Activity activity) {
+    public void changeToVerticalDensity(Activity activity) {
         Logger.d(TAG, "=========changeToVerticalDensity");
         if (state == State.VERTICAL) return;
         state = State.VERTICAL;
@@ -120,12 +117,20 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
         activity.getResources().getDisplayMetrics().scaledDensity = Resources.getSystem().getDisplayMetrics().scaledDensity * verticalScale;
     }
 
-    private void resetDensity(Activity activity) {
+    public void resetDensity(Activity activity) {
         Logger.d(TAG, "=========resetDensity");
         if (state == State.NORMAL) return;
         state = State.NORMAL;
         activity.getResources().getDisplayMetrics().density = Resources.getSystem().getDisplayMetrics().density;
         activity.getResources().getDisplayMetrics().scaledDensity = Resources.getSystem().getDisplayMetrics().scaledDensity;
+    }
+
+    private void setCustomAdapt(Activity activity) {
+        if (((CustomAdapt) activity).isBaseOnWidth()) {
+            changeToHorizontalDensity(activity);
+        } else {
+            changeToVerticalDensity(activity);
+        }
     }
 
     private void getReady(Activity activity) {

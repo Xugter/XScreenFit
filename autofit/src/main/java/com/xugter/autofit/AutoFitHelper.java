@@ -1,5 +1,6 @@
 package com.xugter.autofit;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentCallbacks;
 import android.content.res.Configuration;
@@ -10,10 +11,23 @@ import android.content.res.Configuration;
 
 public class AutoFitHelper {
 
+    private static ActivityLifecycleCallbacksImpl activityLifecycleCallbacks = new ActivityLifecycleCallbacksImpl();
+
+    public static void changeToHorizontal(Activity activity) {
+        activityLifecycleCallbacks.changeToHorizontalDensity(activity);
+    }
+
+    public static void changeToVertical(Activity activity) {
+        activityLifecycleCallbacks.changeToVerticalDensity(activity);
+    }
+
+    public static void resetDensity(Activity activity) {
+        activityLifecycleCallbacks.resetDensity(activity);
+    }
+
     public static class AutoFitHelperBuilder {
 
         private Application application;
-        private ActivityLifecycleCallbacksImpl activityLifecycleCallbacks = new ActivityLifecycleCallbacksImpl();
 
         public AutoFitHelperBuilder(Application application) {
             this.application = application;

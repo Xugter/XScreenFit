@@ -5,5 +5,8 @@ package com.xugter.autofit.adapt;
  */
 
 public interface CustomAdapt {
+
     boolean isBaseOnWidth();
+
+    boolean resetOnResume();
 }
