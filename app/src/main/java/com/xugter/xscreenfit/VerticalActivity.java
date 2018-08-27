@@ -21,4 +21,9 @@ public class VerticalActivity extends AppCompatActivity implements CustomAdapt{
     public boolean isBaseOnWidth() {
         return false;
     }
+
+    @Override
+    public boolean resetOnResume() {
+        return false;
+    }
 }

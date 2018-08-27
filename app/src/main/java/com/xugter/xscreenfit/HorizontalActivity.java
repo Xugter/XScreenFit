@@ -22,4 +22,9 @@ public class HorizontalActivity extends AppCompatActivity implements CustomAdapt
     public boolean isBaseOnWidth() {
         return true;
     }
+
+    @Override
+    public boolean resetOnResume() {
+        return false;
+    }
 }
