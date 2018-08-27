@@ -22,7 +22,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.1'
     testImplementation 'junit:junit:4.12'
 }
 Properties properties = new Properties()
@@ -31,7 +30,7 @@ publish {
     userOrg = properties.getProperty("bintray.user")
     groupId = 'com.xugter'
     artifactId = 'autofit'
-    publishVersion = '0.1.1'
+    publishVersion = '0.1.2'
     desc = 'a lib to help android developer to fit screen'
     website = 'https://github.com/Xugter/XScreenFit'
 }
