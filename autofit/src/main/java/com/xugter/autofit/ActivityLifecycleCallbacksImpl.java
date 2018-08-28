@@ -17,6 +17,9 @@ import com.xugter.autofit.utils.ScreenUtils;
 
 public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifecycleCallbacks {
 
+    /**
+     * 当前屏幕适配的状态
+     */
     enum State {
         VERTICAL,
         HORIZONTAL,
@@ -24,10 +27,17 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
     }
 
     private State state = State.NORMAL;
-    private Object lock = new Object();
+    /**
+     * 缩放因子是否计算完成
+     */
     private boolean isReady = false;
-
+    /**
+     * 竖向缩放因子
+     */
     private float verticalScale = 1;
+    /**
+     * 横向缩放因子
+     */
     private float horizontalScale = 1;
 
     private final static String TAG = "ActivityLifecycleCallbacksImpl";
@@ -35,6 +45,7 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         getReady(activity);
+        //处理 activity 的适配行为
         if (Config.defaultTurnedOn) {
             if (activity instanceof CancelAdapt) {
                 resetDensity(activity);
@@ -70,6 +81,7 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
     public void onActivityResumed(Activity activity) {
         if (state != State.NORMAL && activity instanceof CustomAdapt) {
             if (((CustomAdapt) activity).resetOnResume()) {
+                //根据配置恢复在 resume 恢复 density
                 resetDensity(activity);
             }
         }
@@ -95,12 +107,20 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
 
     }
 
+    /**
+     * 配置改变，需要重新计算适配参数
+     */
     public void configChanged() {
         Logger.i(TAG, "=========configChanged");
         state = State.NORMAL;
         isReady = false;
     }
 
+    /**
+     * 横向适配
+     *
+     * @param activity
+     */
     public void changeToHorizontalDensity(Activity activity) {
         Logger.d(TAG, "=========changeToHorizontalDensity");
         if (state == State.HORIZONTAL) return;
@@ -109,6 +129,11 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
         activity.getResources().getDisplayMetrics().scaledDensity = Resources.getSystem().getDisplayMetrics().scaledDensity * horizontalScale;
     }
 
+    /**
+     * 竖向适配
+     *
+     * @param activity
+     */
     public void changeToVerticalDensity(Activity activity) {
         Logger.d(TAG, "=========changeToVerticalDensity");
         if (state == State.VERTICAL) return;
@@ -117,6 +142,11 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
         activity.getResources().getDisplayMetrics().scaledDensity = Resources.getSystem().getDisplayMetrics().scaledDensity * verticalScale;
     }
 
+    /**
+     * 取消适配
+     *
+     * @param activity
+     */
     public void resetDensity(Activity activity) {
         Logger.d(TAG, "=========resetDensity");
         if (state == State.NORMAL) return;
@@ -125,6 +155,11 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
         activity.getResources().getDisplayMetrics().scaledDensity = Resources.getSystem().getDisplayMetrics().scaledDensity;
     }
 
+    /**
+     * 处理自定义适配 activity
+     *
+     * @param activity
+     */
     private void setCustomAdapt(Activity activity) {
         if (((CustomAdapt) activity).isBaseOnWidth()) {
             changeToHorizontalDensity(activity);
@@ -133,6 +168,11 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
         }
     }
 
+    /**
+     * 计算适配参数
+     *
+     * @param activity
+     */
     private void getReady(Activity activity) {
         if (!isReady) {
             float horizontalDensity = activity.getResources().getDisplayMetrics().widthPixels / Config.baseWidth;

@@ -13,14 +13,29 @@ public class AutoFitHelper {
 
     private static ActivityLifecycleCallbacksImpl activityLifecycleCallbacks = new ActivityLifecycleCallbacksImpl();
 
+    /**
+     * 横向适配屏幕
+     *
+     * @param activity
+     */
     public static void changeToHorizontal(Activity activity) {
         activityLifecycleCallbacks.changeToHorizontalDensity(activity);
     }
 
+    /**
+     * 竖向适配屏幕
+     *
+     * @param activity
+     */
     public static void changeToVertical(Activity activity) {
         activityLifecycleCallbacks.changeToVerticalDensity(activity);
     }
 
+    /**
+     * 取消适配，恢复 density
+     *
+     * @param activity
+     */
     public static void resetDensity(Activity activity) {
         activityLifecycleCallbacks.resetDensity(activity);
     }
