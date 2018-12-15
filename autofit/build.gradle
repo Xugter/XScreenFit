@@ -2,8 +2,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 26
@@ -30,7 +30,7 @@ publish {
     userOrg = properties.getProperty("bintray.user")
     groupId = 'com.xugter'
     artifactId = 'autofit'
-    publishVersion = '0.1.2'
+    publishVersion = '0.1.3'
     desc = 'a lib to help android developer to fit screen'
     website = 'https://github.com/Xugter/XScreenFit'
 }
